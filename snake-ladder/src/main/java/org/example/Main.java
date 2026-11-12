@@ -46,7 +46,7 @@ public class Main {
         int i=1;
         Cell cell = repository.cellByID(1);
         List<Player> all = repository.allPlayers();
-        cell.setPlayers(all);
+//        cell.setPlayers(all);
         for(int j=0; j<all.size(); j++){
             Player p = all.get(j);
             repository.addPos(p.getId(), 1);
@@ -54,14 +54,18 @@ public class Main {
         while(true){
             Player curr = repository.playerById(i);
             int step = dice.rollDice();
-//            cell = repository.cellByID(repository.getPos(curr.getId()));
-            cell = playService.makeMove(cell,curr,step);
-            if(cell == null){
+            cell = repository.cellByID(repository.getPos(curr.getId()));
+            Cell finalCell = playService.makeMove(cell,curr,step);
+            if(finalCell == null){
                 break;
             }
-            if(playService.anyoneWon(cell)){
+            System.out.println(curr.getName()+ " rolled a "+ step+ " and moved from "+ cell.getId() + " to "+ finalCell.getId());
+            if(finalCell.getId().equals(100)){
+                System.out.println(curr.getName() + " won the match!");
                 break;
             }
+//            repository.removePos(curr.getId());
+            repository.addPos(curr.getId(), finalCell.getId());
             i++;
             if(i > all.size()){
                 i=1;

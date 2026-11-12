@@ -20,12 +20,11 @@ public class PlayService {
         Integer id= cell.getId();
         int pos = id + steps;
         if(pos>100){
-            System.out.print("Invalid move");
-            return null;
+            return cell;
         }
         Cell finalCell= repository.cellByID(pos);
-        Ladder ladder = repository.getLadder(cell);
-        Snake snake= repository.getSnake(cell);
+        Ladder ladder = repository.getLadder(finalCell);
+        Snake snake= repository.getSnake(finalCell);
         if(!Objects.isNull(ladder)){
             cell.removePlayer(player);
             finalCell = repository.cellByID(ladder.getEnPos());
@@ -45,7 +44,7 @@ public class PlayService {
         }
         Player player = cell.getPlayers().getFirst();
         if(cell.getId()==100){
-            System.out.println(player + " won the game");
+            System.out.println(player.getName() + " won the game");
             return true;
         }
         return false;
